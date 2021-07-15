@@ -5,65 +5,57 @@ import FeedbackOptions from './components/FeedbackOptions/FeedbackOptions '
 
 function App() {
 
-    const [Good, setGood] = useState({
-        Good: 0,
-        Neutral: 0,
-        Bad: 0
-    });
-
-    // const [Neutral, setNeutral] = useState(0);
-    // const [Bad, setBad] = useState(0);
-
-    const state =
-
-    {
-        Good: 0,
-        Neutral: 0,
-        Bad: 0
-    }
-        ;
+    const [good, setGood] = useState(0);
+    const [neutral, setNeutral] = useState(0);
+    const [bad, setBad] = useState(0);
 
     const onLeaveFeedback = (evt) => {
 
-        console.log(evt.target.innerHTML);
-
-        setGood(prevState => {
-            return {
-                [Good.evt.target.innerHTML]: prevState[evt.target.innerHTML] + 1
-            }
-        })
-
+        if (evt.target.innerHTML === "Good") {
+             setGood(state=> state +1);
+        }
+        if (evt.target.innerHTML === "Neutral") {
+             setNeutral(state=> state +1);
+         }
+        if (evt.target.innerHTML === "Bad") {
+             setBad(state=> state +1);
+         }
     }
 
-    // countTotalFeedback = () => {
-    //     let total = this.state.Neutral + this.state.Bad + this.state.Good;
-    //     return total;
-    // };
-    // countPositiveFeedbackPercentage = () => {
+    function countTotalFeedback () {
+        let total = neutral + bad + good;
+        return total;
+    };
+    function countPositiveFeedbackPercentage (){
 
-    //     let TotalFeedBack = this.state.Neutral + this.state.Bad + this.state.Good;
-    //     let PosFeedBack = Math.floor(this.state.Good / TotalFeedBack * 100) + "%";
-    //     return PosFeedBack;
-    // };
+        let TotalFeedBack = neutral + bad + good;
+        let PosFeedBack = Math.floor(good / TotalFeedBack * 100) + "%";
+        return PosFeedBack;
+    };
 
 
-    const stateArr = Object.keys(state);
+    const stateArr = ['Good', 'Neutral', 'Bad'];
 
-    console.log(Good);
     return (
-        <>
-            <h2>Please leave feedback</h2>
             <>
-                <FeedbackOptions
-                    propspArr={stateArr}
-                    onLeaveFeedback={onLeaveFeedback}
-                />
+                <h2>Please leave feedback</h2>
+                <>
+                    <FeedbackOptions
+                        propspArr={stateArr}
+                        onLeaveFeedback={onLeaveFeedback}
+                    />
+                </>
+
+                <h2>Statistics</h2>
+                {countTotalFeedback() === 0 ? <Notification message="No feedback given" /> :
+                    <Statistics
+                        good={good}
+                        neutral={neutral}
+                        bad={bad}
+                        total={countTotalFeedback()}
+                        positivePercentage={countPositiveFeedbackPercentage()}
+                    />}
             </>
-
-            <h2>Statistics</h2>
-        </>
-
-
 
     );
 
